@@ -66,8 +66,29 @@ IF fever AND headache AND body pain
 
 IF headache only
     THEN suggest "Headache/migraine-like" + category + advice
-
-...
+... 
 ELSE
     Unclear → advise to consult a doctor
+```
+
+## 📸 Screenshots
+
+### Sample Console Output
+![Console Output](console-output.png)
+
+### System Architecture 
+![System Architecture](architecture.png)
+
+---
+
+## 🌐 Live Demo
+You can try the web version of this expert system here:  
+👉 [Live Demo on GitHub Pages](https://khushiebrahma.github.io/Medical-Expert-System/)
+
+
+
+
+
+
+
 
