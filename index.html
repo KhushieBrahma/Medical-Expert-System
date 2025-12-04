@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Medical Expert System (Demo)</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: #f5f7fb;
+      margin: 0;
+      padding: 0;
+    }
+    .container {
+      max-width: 900px;
+      margin: 40px auto;
+      background: #ffffff;
+      border-radius: 12px;
+      padding: 24px 28px 32px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+    }
+    h1 {
+      margin-top: 0;
+      text-align: center;
+      font-size: 24px;
+    }
+    h2 {
+      font-size: 18px;
+      margin-bottom: 8px;
+    }
+    p {
+      margin-top: 4px;
+      margin-bottom: 10px;
+      line-height: 1.5;
+    }
+    .warning {
+      background: #fff4e5;
+      border-left: 4px solid #ff9800;
+      padding: 8px 12px;
+      font-size: 13px;
+      margin-bottom: 16px;
+    }
+    .card {
+      background: #f9fafc;
+      border-radius: 10px;
+      padding: 16px 18px;
+      margin-bottom: 18px;
+      border: 1px solid #e2e6f0;
+    }
+    .symptom-list {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 6px 18px;
+      font-size: 14px;
+    }
+    .symptom-list label {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    button {
+      background: #2563eb;
+      border: none;
+      color: white;
+      padding: 10px 18px;
+      border-radius: 999px;
+      cursor: pointer;
+      font-size: 14px;
+      font-weight: 500;
+      margin-top: 8px;
+    }
+    button:hover {
+      background: #1d4ed8;
+    }
+    button:active {
+      transform: translateY(1px);
+    }
+    .result {
+      margin-top: 10px;
+      padding-top: 10px;
+      border-top: 1px dashed #d0d5e6;
+      font-size: 14px;
+    }
+    .result h3 {
+      margin-top: 6px;
+      margin-bottom: 4px;
+      font-size: 16px;
+    }
+    .tag {
+      display: inline-block;
+      padding: 2px 8px;
+      border-radius: 999px;
+      background: #e0ecff;
+      color: #1d4ed8;
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      margin-bottom: 6px;
+    }
+    ul {
+      margin-top: 4px;
+      padding-left: 18px;
+    }
+    footer {
+      text-align: center;
+      font-size: 11px;
+      color: #6b7280;
+      margin-top: 18px;
+    }
+    .small-note {
+      font-size: 12px;
+      color: #6b7280;
+      margin-top: 6px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Medical Expert System (Demo)</h1>
+    <div class="warning">
+      <strong>Disclaimer:</strong> This is an <b>academic demonstration only</b>.
+      It must <b>not</b> be used for real diagnosis or treatment. Always consult a
+      qualified doctor for medical advice.
+    </div>
+
+    <div class="card">
+      <h2>Step 1: Select Your Symptoms</h2>
+      <p>Tick all symptoms that apply and click <b>"Get Recommendation"</b>.</p>
+
+      <div class="symptom-list">
+        <label><input type="checkbox" value="fever" /> Fever</label>
+        <label><input type="checkbox" value="cough" /> Cough</label>
+        <label><input type="checkbox" value="headache" /> Headache</label>
+        <label><input type="checkbox" value="soreThroat" /> Sore throat</label>
+        <label><input type="checkbox" value="coldNose" /> Runny / blocked nose</label>
+        <label><input type="checkbox" value="stomachPain" /> Stomach pain</label>
+        <label><input type="checkbox" value="nausea" /> Nausea</label>
+        <label><input type="checkbox" value="skinRash" /> Skin rash / itching</label>
+        <label><input type="checkbox" value="bodyPain" /> Body / muscle pain</label>
+      </div>
+
+      <button id="btnRecommend">Get Recommendation</button>
+      <div class="small-note">
+        This logic is equivalent to the rules used in the Java console version.
+      </div>
+
+      <div id="result" class="result"></div>
+    </div>
+
+    <div class="card">
+      <h2>How This Expert System Works</h2>
+      <p>
+        This page uses a simple <b>rule-based inference engine</b> in JavaScript.
+        Based on your selected symptoms, it matches predefined rules and
+        displays:
+      </p>
+      <ul>
+        <li>A rough guess of the possible condition type</li>
+        <li>A general <b>medicine category</b> (not specific drug names)</li>
+        <li>Basic advice and a reminder to consult a real doctor</li>
+      </ul>
+    </div>
+
+    <footer>
+      Medical Expert System (Academic Demo) · Built by Khushi Brahma ·
+      Source code available on GitHub
+    </footer>
+  </div>
+
+  <script>
+    function getRecommendation(symptoms) {
+      const has = (name) => symptoms.includes(name);
+
+      const fever = has("fever");
+      const cough = has("cough");
+      const headache = has("headache");
+      const soreThroat = has("soreThroat");
+      const coldNose = has("coldNose");
+      const stomachPain = has("stomachPain");
+      const nausea = has("nausea");
+      const skinRash = has("skinRash");
+      const bodyPain = has("bodyPain");
+
+      const rec = {
+        conditionGuess: "",
+        category: "",
+        advice: []
+      };
+
+      // --- Rules (same logic as Java version) ---
+
+      if (fever && cough && (soreThroat || coldNose)) {
+        rec.conditionGuess = "Cold / flu-like illness (suspected)";
+        rec.category =
+          "Fever & pain management, cough relief, and throat soothing category.";
+        rec.advice.push(
+          "Rest and drink plenty of fluids.",
+          "Monitor your temperature and overall condition.",
+          "If symptoms get severe, are long-lasting, or you have other health conditions, consult a doctor."
+        );
+      } else if (fever && headache && bodyPain) {
+        rec.conditionGuess = "Viral fever-like condition (suspected)";
+        rec.category = "Fever reducers and mild pain relief category.";
+        rec.advice.push(
+          "Take adequate rest and stay hydrated.",
+          "Seek medical advice if fever is high, persistent, or if you feel very weak."
+        );
+      } else if (
+        headache &&
+        !fever &&
+        !cough &&
+        !soreThroat &&
+        !coldNose &&
+        !stomachPain &&
+        !nausea &&
+        !skinRash
+      ) {
+        rec.conditionGuess = "Primary headache / migraine-like condition (suspected)";
+        rec.category = "Mild pain relief / headache relief category.";
+        rec.advice.push(
+          "Rest in a quiet, dark room and limit screen time.",
+          "If headaches are frequent, severe, or accompanied by other symptoms, consult a doctor."
+        );
+      } else if (stomachPain && nausea) {
+        rec.conditionGuess = "Gastric / indigestion-like issue (suspected)";
+        rec.category =
+          "Digestive support / acidity control / anti-nausea medicine category.";
+        rec.advice.push(
+          "Avoid heavy, oily, or spicy food.",
+          "Drink small sips of water.",
+          "If pain is very sharp, persistent, or accompanied by vomiting or blood, seek emergency medical help."
+        );
+      } else if (skinRash && !fever && !stomachPain) {
+        rec.conditionGuess = "Mild allergy / skin irritation-like condition (suspected)";
+        rec.category = "Anti-allergy / soothing skin preparations category.";
+        rec.advice.push(
+          "Avoid scratching and avoid known triggers like certain soaps or creams.",
+          "If rash spreads quickly or you have breathing difficulty, seek emergency help."
+        );
+      } else {
+        rec.conditionGuess = "Unclear / mixed symptoms";
+        rec.category =
+          "No specific medicine category can be safely suggested by this demo.";
+        rec.advice.push(
+          "Your symptoms do not clearly match a simple pattern in this demo system.",
+          "Please consult a qualified doctor for proper diagnosis and treatment.",
+          "Do not self-medicate for serious symptoms."
+        );
+      }
+
+      return rec;
+    }
+
+    document.getElementById("btnRecommend").addEventListener("click", () => {
+      const checkboxes = document.querySelectorAll(".symptom-list input[type=checkbox]");
+      const selected = [];
+      checkboxes.forEach((cb) => {
+        if (cb.checked) selected.push(cb.value);
+      });
+
+      const resultDiv = document.getElementById("result");
+      resultDiv.innerHTML = "";
+
+      if (selected.length === 0) {
+        resultDiv.innerHTML = "<p>Please select at least one symptom.</p>";
+        return;
+      }
+
+      const rec = getRecommendation(selected);
+
+      const adviceList = rec.advice.map((a) => `<li>${a}</li>`).join("");
+
+      resultDiv.innerHTML = `
+        <span class="tag">System Recommendation</span>
+        <h3>Possible Condition (rough guess)</h3>
+        <p>${rec.conditionGuess}</p>
+        <h3>Suggested Medicine Category</h3>
+        <p>${rec.category}</p>
+        <h3>General Advice</h3>
+        <ul>${adviceList}</ul>
+        <p class="small-note">
+          This is only a learning tool. Always consult a real doctor for any medical issue.
+        </p>
+      `;
+    });
+  </script>
+</body>
+</html>
