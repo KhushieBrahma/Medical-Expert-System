@@ -70,6 +70,7 @@ IF headache only
 ELSE
     Unclear → advise to consult a doctor
 ```
+---
 
 ## 📸 Screenshots
 
